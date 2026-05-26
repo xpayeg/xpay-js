@@ -189,17 +189,6 @@ paymentElement.on('change', (event) => {
 });
 ```
 
-### Card Element (card form only -- you handle method selection)
-
-```javascript
-const cardElement = elements.create('card');
-cardElement.mount('#card-form');
-
-cardElement.on('change', (event) => {
-  console.log(event.complete, event.value.brand);
-});
-```
-
 ## Step 4: Confirm the Payment
 
 `confirm()` returns a tagged union -- check `type` to determine the outcome.
