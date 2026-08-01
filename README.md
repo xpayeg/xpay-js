@@ -231,18 +231,10 @@ await checkout.confirm({
 | `redirect` | Behavior |
 |---|---|
 | Not set (default) | `"if_required"` — returns result to your code |
-| `"always"` | Redirects to `returnUrl` (client override) → server's `afterCompletion.redirect.url` |
+| `"always"` | Redirects to the session's `afterCompletion.redirect.url` |
 | `"if_required"` | Returns result to your code — no redirect |
 
-You can override the server's redirect URL from the client:
-
-```javascript
-await checkout.confirm({
-  customerDetails: { email, name },
-  redirect: 'always',
-  returnUrl: 'https://mysite.com/custom-success', // Overrides server URL
-});
-```
+Your server sets that URL when it creates the session. XPay navigates there unchanged, appending nothing.
 
 ### Pre-validation with `submit()`
 
@@ -466,7 +458,7 @@ elements.changeAppearance({ colorMode: 'light' });
 
 ## API Reference
 
-### `loadXPay(publishableKey?)`
+### `loadXPay(publishableKey)`
 
 Loads the XPay SDK from CDN. Returns a Promise. Call at module level, not inside components.
 

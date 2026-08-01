@@ -1,5 +1,24 @@
 # @xpayeg/sdk
 
+## 2.0.0
+### Major Changes
+
+
+
+- [#331](https://github.com/xpayeg/xpay/pull/331) [`bdc6a48`](https://github.com/xpayeg/xpay/commit/bdc6a4865f8c0326a4c0eb3dd20808e1207d682a) Thanks [@Elmosh](https://github.com/Elmosh)! - **Breaking:** `returnUrl` is removed from `confirmPayment()` options. The return destination is always the checkout session's `afterCompletion.redirect.url`, set server-side at session creation.
+  
+  The URL is sent to the bank during authentication, before the browser leaves your page, so a value passed at confirm time could only ever conflict with what the bank already received. Delete `returnUrl` from `confirmPayment()` and set `afterCompletion.redirect.url` on `createSession`. `redirect: "always"` now follows that destination.
+  
+  **Breaking:** `afterCompletion` is now required for `uiMode: "embedded"` and `uiMode: "custom"`, and must be `type: "redirect"`. That URL is where the bank returns when authentication takes over the full page, which happens in in-app browsers where an embedded challenge cannot run. `hosted_confirmation` is rejected for these modes since those integrations run on your own site and there is no XPay page to return to.
+  
+  Also fixed: the 3DS challenge now renders at the size declared to the issuer (previously cropped or oversized), the overlay waits for the issuer's page to paint instead of showing an empty frame, and a challenge that cannot run in an iframe takes over the full tab instead of failing silently.
+
+### Patch Changes
+
+
+
+- [#333](https://github.com/xpayeg/xpay/pull/333) [`3dcea81`](https://github.com/xpayeg/xpay/commit/3dcea81b3e3f67267624105560c38f2615c35d96) Thanks [@Elmosh](https://github.com/Elmosh)! - Documentation: the `redirect: "always"` tables and examples now state that the destination is the checkout session's `afterCompletion.redirect.url`, set server-side at session creation.
+
 ## 1.0.1
 ### Patch Changes
 
