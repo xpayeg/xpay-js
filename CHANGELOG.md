@@ -1,5 +1,20 @@
 # @xpayeg/sdk
 
+## 2.1.0
+### Minor Changes
+
+
+
+- [#224](https://github.com/xpayeg/xpay/pull/224) [`40beff5`](https://github.com/xpayeg/xpay/commit/40beff5ee4660914dff5c0f7c43480083bf331c4) Thanks [@mariamkamel](https://github.com/mariamkamel)! - `CheckoutCompleteResult` (drop-in `onComplete`) and the `session` in `confirmPayment()`'s success result now carry `paymentStatus`. Methods the customer pays afterwards, such as Fawry, complete checkout as `unpaid` and are paid later. Fulfil on `paymentStatus: "paid"`, never on completion alone.
+  
+  Drop-in `onError` now fires when an attempt fails (declined, canceled, processing error) and when the session is expired or already complete on load. The modal unlocks after a failed attempt so the customer can close it; previously it stayed locked until a successful payment.
+
+### Patch Changes
+
+
+
+- [#453](https://github.com/xpayeg/xpay/pull/453) [`5445718`](https://github.com/xpayeg/xpay/commit/5445718b5027cba56f1d645cba6f42904d2c2f2c) Thanks [@Elmosh](https://github.com/Elmosh)! - `@xpayeg/react` now declares its `@xpayeg/sdk` peer dependency as `^2.0.0` instead of an exact pinned version, so the two packages no longer have to be upgraded in lockstep within a major.
+
 ## 2.0.0
 ### Major Changes
 
