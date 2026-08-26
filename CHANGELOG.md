@@ -1,5 +1,14 @@
 # @xpayeg/sdk
 
+## 2.2.0
+### Minor Changes
+
+
+
+- [#462](https://github.com/xpayeg/xpay/pull/462) [`f083704`](https://github.com/xpayeg/xpay/commit/f08370434ff93c52450cfaee17f249c11b5cd46c) Thanks [@Elmosh](https://github.com/Elmosh)! - Deferred-mount Payment Element: `xpay.elements({ mode: "payment", amount, currency })` renders the payment form with no checkout session — your server creates the session with the final total when the customer clicks Pay, and its clientSecret is passed to `confirmPayment({ elements, clientSecret })` (a plain string). The session's total must equal the amount the element displays, or the confirmation fails with `amount_reconfirmation_required` and nothing is charged. Adds `elements.update({ amount, currency })` for deferred display updates. `XPayProvider` accepts the new options form; deferred amount/currency prop changes flow through `elements.update()` without recreating the instance. The existing `{ clientSecret }` path is unchanged.
+  
+  Also in this release: the overlay scroll lock (3DS/action overlay and drop-in modal, now one shared implementation) pins the page at its measured geometry and preserves the scrollbar gutter, so centered boxed themes no longer shift when an overlay opens; `elements.fetchUpdates()` now genuinely re-fetches the session from the server (it previously answered from the iframe's local state; failures now resolve the error arm instead of returning stale data), and `CheckoutSession` gains optional `presentmentDetails` — the customer-facing amounts, present only when the merchant prices in a currency other than the processing currency. Read amounts presentment-first.
+
 ## 2.1.0
 ### Minor Changes
 
