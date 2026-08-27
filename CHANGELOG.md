@@ -1,5 +1,12 @@
 # @xpayeg/sdk
 
+## 2.3.0
+### Minor Changes
+
+
+
+- [#471](https://github.com/xpayeg/xpay/pull/471) [`e76a6c3`](https://github.com/xpayeg/xpay/commit/e76a6c3e5f73f4dcf1f108b6be0e1a63dce5d1b9) Thanks [@Elmosh](https://github.com/Elmosh)! - Deferred Elements accept `paymentMethodTypes` (e.g. `["card"]`) to restrict which payment methods the element renders. Narrow-only: the list is intersected with the methods enabled for your account, so a type you have not enabled is never rendered, and an empty intersection fails with `loaderror` instead of rendering an empty frame. Fixed for the element's lifetime; pass the same values when your server creates the session so display and acceptance match. One method per element is the pattern for per-method rows in your own selector.
+
 ## 2.2.0
 ### Minor Changes
 
