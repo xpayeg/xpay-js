@@ -1,5 +1,12 @@
 # @xpayeg/sdk
 
+## 2.4.0
+### Minor Changes
+
+
+
+- [#474](https://github.com/xpayeg/xpay/pull/474) [`c45243c`](https://github.com/xpayeg/xpay/commit/c45243c970b71944482352baea8e8047ba746d8b) Thanks [@Elmosh](https://github.com/Elmosh)! - The Payment Element's `layout` option now works: `elements.create("payment", { layout })`, or the `options` prop on `<PaymentElement />`. `"accordion"` (default) is the vertical list; `"tabs"` is a wrapping tile grid with the selected method's form below it. With exactly one payment method the chooser chrome collapses: the accordion shows a static logo-and-name header above the content (card keeps its bare form), and tabs render the content alone with no logo or title, for pages whose own UI already shows the method's identity, such as a per-gateway row paired with `paymentMethodTypes: ["<type>"]`. Layout is updatable after creation via `element.update({ layout })`, and every method's form stays mounted across switches so typed card details survive.
+
 ## 2.3.0
 ### Minor Changes
 
