@@ -1,92 +1,95 @@
 # @xpayeg/sdk
 
+## 3.0.0
+
+### Major Changes
+
+- [#513](https://github.com/xpayeg/xpay/pull/513) [`4cfeec3`](https://github.com/xpayeg/xpay/commit/4cfeec3a67f43623fb1ab024f86d0f40d9c0b36c) Thanks [@Elmosh](https://github.com/Elmosh)! - Modernize the SDK build and bundled TypeScript declarations while preserving both ESM and CommonJS entrypoints. The browser loader and React component APIs are unchanged.
+
+  The public checkout types now describe nullable API fields and pending discounts. TypeScript consumers may need null checks and must narrow pending versus applied discounts before accessing fields specific to either variant. This public type change, rather than module-format support, requires the major release.
+
+### Patch Changes
+
+- [#541](https://github.com/xpayeg/xpay/pull/541) [`c6f29c9`](https://github.com/xpayeg/xpay/commit/c6f29c9b9bd73decb4c3f250ce1d55f317d7a81a) Thanks [@Elmosh](https://github.com/Elmosh)! - Preserve CommonJS support alongside ESM in the modernized SDK build. Generate both JavaScript formats and their matching TypeScript declarations from the same source, and verify both entrypoints and the packed publication boundary before release.
+
+- [#528](https://github.com/xpayeg/xpay/pull/528) [`574ef13`](https://github.com/xpayeg/xpay/commit/574ef135692dac3a33a2c42acac4543eb80a4c91) Thanks [@Elmosh](https://github.com/Elmosh)! - Remove private workspace metadata and source-path comments from the published packages. Keep SDK declarations limited to the public checkout types, with compile-time checks against generated API responses to prevent drift. Runtime behavior is unchanged.
+
 ## 2.4.0
+
 ### Minor Changes
-
-
 
 - [#474](https://github.com/xpayeg/xpay/pull/474) [`c45243c`](https://github.com/xpayeg/xpay/commit/c45243c970b71944482352baea8e8047ba746d8b) Thanks [@Elmosh](https://github.com/Elmosh)! - The Payment Element's `layout` option now works: `elements.create("payment", { layout })`, or the `options` prop on `<PaymentElement />`. `"accordion"` (default) is the vertical list; `"tabs"` is a wrapping tile grid with the selected method's form below it. With exactly one payment method the chooser chrome collapses: the accordion shows a static logo-and-name header above the content (card keeps its bare form), and tabs render the content alone with no logo or title, for pages whose own UI already shows the method's identity, such as a per-gateway row paired with `paymentMethodTypes: ["<type>"]`. Layout is updatable after creation via `element.update({ layout })`, and every method's form stays mounted across switches so typed card details survive.
 
 ## 2.3.0
+
 ### Minor Changes
-
-
 
 - [#471](https://github.com/xpayeg/xpay/pull/471) [`e76a6c3`](https://github.com/xpayeg/xpay/commit/e76a6c3e5f73f4dcf1f108b6be0e1a63dce5d1b9) Thanks [@Elmosh](https://github.com/Elmosh)! - Deferred Elements accept `paymentMethodTypes` (e.g. `["card"]`) to restrict which payment methods the element renders. Narrow-only: the list is intersected with the methods enabled for your account, so a type you have not enabled is never rendered, and an empty intersection fails with `loaderror` instead of rendering an empty frame. Fixed for the element's lifetime; pass the same values when your server creates the session so display and acceptance match. One method per element is the pattern for per-method rows in your own selector.
 
 ## 2.2.0
+
 ### Minor Changes
 
-
-
 - [#462](https://github.com/xpayeg/xpay/pull/462) [`f083704`](https://github.com/xpayeg/xpay/commit/f08370434ff93c52450cfaee17f249c11b5cd46c) Thanks [@Elmosh](https://github.com/Elmosh)! - Deferred-mount Payment Element: `xpay.elements({ mode: "payment", amount, currency })` renders the payment form with no checkout session — your server creates the session with the final total when the customer clicks Pay, and its clientSecret is passed to `confirmPayment({ elements, clientSecret })` (a plain string). The session's total must equal the amount the element displays, or the confirmation fails with `amount_reconfirmation_required` and nothing is charged. Adds `elements.update({ amount, currency })` for deferred display updates. `XPayProvider` accepts the new options form; deferred amount/currency prop changes flow through `elements.update()` without recreating the instance. The existing `{ clientSecret }` path is unchanged.
-  
+
   Also in this release: the overlay scroll lock (3DS/action overlay and drop-in modal, now one shared implementation) pins the page at its measured geometry and preserves the scrollbar gutter, so centered boxed themes no longer shift when an overlay opens; `elements.fetchUpdates()` now genuinely re-fetches the session from the server (it previously answered from the iframe's local state; failures now resolve the error arm instead of returning stale data), and `CheckoutSession` gains optional `presentmentDetails` — the customer-facing amounts, present only when the merchant prices in a currency other than the processing currency. Read amounts presentment-first.
 
 ## 2.1.0
+
 ### Minor Changes
 
-
-
 - [#224](https://github.com/xpayeg/xpay/pull/224) [`40beff5`](https://github.com/xpayeg/xpay/commit/40beff5ee4660914dff5c0f7c43480083bf331c4) Thanks [@mariamkamel](https://github.com/mariamkamel)! - `CheckoutCompleteResult` (drop-in `onComplete`) and the `session` in `confirmPayment()`'s success result now carry `paymentStatus`. Methods the customer pays afterwards, such as Fawry, complete checkout as `unpaid` and are paid later. Fulfil on `paymentStatus: "paid"`, never on completion alone.
-  
+
   Drop-in `onError` now fires when an attempt fails (declined, canceled, processing error) and when the session is expired or already complete on load. The modal unlocks after a failed attempt so the customer can close it; previously it stayed locked until a successful payment.
 
 ### Patch Changes
 
-
-
 - [#453](https://github.com/xpayeg/xpay/pull/453) [`5445718`](https://github.com/xpayeg/xpay/commit/5445718b5027cba56f1d645cba6f42904d2c2f2c) Thanks [@Elmosh](https://github.com/Elmosh)! - `@xpayeg/react` now declares its `@xpayeg/sdk` peer dependency as `^2.0.0` instead of an exact pinned version, so the two packages no longer have to be upgraded in lockstep within a major.
 
 ## 2.0.0
+
 ### Major Changes
 
-
-
 - [#331](https://github.com/xpayeg/xpay/pull/331) [`bdc6a48`](https://github.com/xpayeg/xpay/commit/bdc6a4865f8c0326a4c0eb3dd20808e1207d682a) Thanks [@Elmosh](https://github.com/Elmosh)! - **Breaking:** `returnUrl` is removed from `confirmPayment()` options. The return destination is always the checkout session's `afterCompletion.redirect.url`, set server-side at session creation.
-  
+
   The URL is sent to the bank during authentication, before the browser leaves your page, so a value passed at confirm time could only ever conflict with what the bank already received. Delete `returnUrl` from `confirmPayment()` and set `afterCompletion.redirect.url` on `createSession`. `redirect: "always"` now follows that destination.
-  
+
   **Breaking:** `afterCompletion` is now required for `uiMode: "embedded"` and `uiMode: "custom"`, and must be `type: "redirect"`. That URL is where the bank returns when authentication takes over the full page, which happens in in-app browsers where an embedded challenge cannot run. `hosted_confirmation` is rejected for these modes since those integrations run on your own site and there is no XPay page to return to.
-  
+
   Also fixed: the 3DS challenge now renders at the size declared to the issuer (previously cropped or oversized), the overlay waits for the issuer's page to paint instead of showing an empty frame, and a challenge that cannot run in an iframe takes over the full tab instead of failing silently.
 
 ### Patch Changes
 
-
-
 - [#333](https://github.com/xpayeg/xpay/pull/333) [`3dcea81`](https://github.com/xpayeg/xpay/commit/3dcea81b3e3f67267624105560c38f2615c35d96) Thanks [@Elmosh](https://github.com/Elmosh)! - Documentation: the `redirect: "always"` tables and examples now state that the destination is the checkout session's `afterCompletion.redirect.url`, set server-side at session creation.
 
 ## 1.0.1
+
 ### Patch Changes
 
-
-
 - [#103](https://github.com/xpayeg/xpay/pull/103) [`7402e27`](https://github.com/xpayeg/xpay/commit/7402e27cde482148f126b2073694ef38386ea87a) Thanks [@Elmosh](https://github.com/Elmosh)! - Remove `CardElement` from both SDKs — `PaymentElement` is the only supported element going forward. It handles every payment method (Card, ValU, Fawry, etc.) through one unified UI and renders the appropriate fields based on the customer's choice.
-  
+
   This release also republishes both packages through the proper `pnpm publish` flow, which fixes the `workspace:*` protocol leak in 1.0.0's `devDependencies` and `peerDependencies`. `npm install @xpayeg/sdk` and `npm install @xpayeg/react` now work cleanly.
-  
+
   **Migration:** replace `elements.create("card")` with `elements.create("payment")`. If you previously rendered `<CardElement>` only when the user selected "Card" from your own picker, switch to `<PaymentElement>` which provides both the picker and the card form together.
-  
+
   ```ts
   // Before
   const cardElement = elements.create("card");
   cardElement.mount("#card");
-  
+
   // After
   const paymentElement = elements.create("payment");
   paymentElement.mount("#payment");
   ```
 
 ## 1.0.0
+
 ### Major Changes
 
-
-
 - [#100](https://github.com/xpayeg/xpay/pull/100) [`76481af`](https://github.com/xpayeg/xpay/commit/76481af7da2fab85f3557666315374c09cc5dddf) Thanks [@Elmosh](https://github.com/Elmosh)! - Initial 1.0.0 release.
-  
+
   `@xpayeg/sdk` ships the `loadXPay()` loader plus the full public TypeScript surface for embedding XPay payments — `Elements`, `PaymentElement`, `CardElement`, drop-in `checkout()`, `initCheckout()`, action methods (`confirm`, `applyPromotionCode`, `removePromotionCode`, `updateLineItemQuantity`, `submit`, `fetchUpdates`, `changeAppearance`), and the tagged-union `ActionResult` / `XPayError` shapes.
-  
+
   `@xpayeg/react` ships the React bindings: `XPayProvider`, `useCheckout`, `useXPay`, `useElements`, `useConfirmPayment`, `<PaymentElement>`, `<CardElement>`, and `<CheckoutButton>` — all SSR-safe, with stable event listeners and smart option diffing.
-  
+
   The runtime is served from `https://checkout.xpay.app/v1/sdk.js` and auto-loaded by `loadXPay()`. Both packages publish with npm provenance.
