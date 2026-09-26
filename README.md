@@ -126,7 +126,7 @@ const checkout = await xpay.initCheckout({
 | `merchantName`   | `string`                  | `"My Store"`                        | Merchant display name                         |
 | `livemode`       | `boolean`                 | `false`                             | Whether live or test mode                     |
 | `paymentMethods` | `PaymentMethodInfo[]`     | `[{ type, displayName, category }]` | Available payment methods                     |
-| `lineItems`      | `LineItemDto[]`           |                                     | Line items with prices and quantities         |
+| `lineItems`      | `CheckoutLineItem[]`      |                                     | Line items with prices and quantities         |
 | `totalDetails`   | `TotalDetailsResponseDto` |                                     | Breakdown of fees, discounts, VAT             |
 | `discounts`      | `DiscountResponseDto[]`   |                                     | Applied discounts                             |
 

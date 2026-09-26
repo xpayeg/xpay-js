@@ -1,5 +1,11 @@
 # @xpayeg/sdk
 
+## 3.1.0
+
+### Minor Changes
+
+- [#600](https://github.com/xpayeg/xpay/pull/600) [`9f4d949`](https://github.com/xpayeg/xpay/commit/9f4d949ff5f51b0c739521155fa392340bb3067e) Thanks [@Elmosh](https://github.com/Elmosh)! - Add availability status to checkout line-item types.
+
 ## 3.0.0
 
 ### Major Changes
