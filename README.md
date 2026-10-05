@@ -262,6 +262,46 @@ if (error) {
 const result = await checkout.confirm({ paymentMethod: selectedPaymentMethod });
 ```
 
+For deferred Elements (`mode: "payment"`), Apple Pay authorization happens in
+`elements.submit()`. Call it directly from the customer's payment click, before
+awaiting form validation or creating the checkout session when possible. If an
+async caller has already lost browser activation, the SDK shows a top-level
+continuation dialog; its Apple Pay button opens the sheet synchronously. The
+original `submit()` remains pending and the caller continues automatically after
+authorization is stored. Repeated calls share this pending promise. The sheet uses the
+preloaded processing quote for the displayed total. For foreign-currency pricing,
+Apple Pay shows the converted EGP amount, using XPay's shared currency conversion.
+A successful `submit()` means the
+authorization was stored, not that payment succeeded.
+
+After `submit()`, create the session on your server and pass its `clientSecret` to
+`xpay.confirmPayment()`. Token storage, your server request and confirmation share
+one 28-second budget starting when the customer authorizes Apple Pay; server
+authorization expiry can shorten it further. Repeated `submit()` calls reuse the
+same unexpired authorization. If the session's final EGP total differs from the
+earlier quote (for example, because of line-item rounding or a rate change), the
+SDK closes the old sheet without charging and asks for fresh approval through
+its existing continuation dialog. It then resumes the same `confirmPayment()`
+call with the same session. No integration changes are needed. Fee pass-through
+still requires session-first Elements. Cart or
+payment-method changes invalidate unused authorization and require a new click.
+Treat `payment_still_confirming` as an unknown outcome. Retain the existing
+checkout session and client secret when retrying: the server resolves the previous
+attempt before allowing another charge. Never create a replacement session to
+retry an uncertain payment. A definitive refusal closes the sheet and lets the
+same Elements instance accept a new preparation and fresh customer consent.
+Successful or uncertain dispatched authorizations remain protected against reuse;
+restarting the payment UI requires fresh Elements and fresh customer consent,
+while retaining the same checkout session. Only the authoritative confirmation
+result determines payment success.
+
+If your server cannot create the session after `submit()` succeeds, do not call
+`confirmPayment()`. Call `elements.destroy()` to close the sheet immediately and
+invalidate unused consent, then create and mount fresh Elements before another
+payment click. There is currently no public cancel-only method. Without explicit
+cleanup, the original authorization deadline closes the sheet. Destroying Elements
+after confirmation was dispatched stops the UI; it does not cancel a bank charge.
+
 ## Step 4b: Update Session (Promo Codes, Quantities)
 
 Action methods return `Promise<{ type: "success", session } | { type: "error", error }>`.

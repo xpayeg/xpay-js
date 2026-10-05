@@ -1,5 +1,15 @@
 # @xpayeg/sdk
 
+## 3.1.1
+
+### Patch Changes
+
+- [#149](https://github.com/xpayeg/xpay/pull/149) [`cb965ca`](https://github.com/xpayeg/xpay/commit/cb965ca3f8a2f216fcdcf3ecdd951e6a45dfa6b2) Thanks [@mariamkamel](https://github.com/mariamkamel)! - Document deferred Apple Pay submit authorization, automatic gesture continuation for async callers, the shared confirmation deadline, cleanup after session-creation errors, and safe same-session retries.
+
+- [#149](https://github.com/xpayeg/xpay/pull/149) [`d958d70`](https://github.com/xpayeg/xpay/commit/d958d703c217d4e572673895c720ec0c9206e59f) Thanks [@mariamkamel](https://github.com/mariamkamel)! - Document deferred wallet currency conversion and SDK-managed reauthorization when the final processing total changes. Existing merchant integrations need no code changes.
+
+  Fix `PaymentMethodInfo.category`: the wallet value is `"digital_wallet"`, matching what the API returns.
+
 ## 3.1.0
 
 ### Minor Changes
